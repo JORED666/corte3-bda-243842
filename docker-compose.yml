@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: clinica_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: clinica_vet
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema_corte3.sql:/docker-entrypoint-initdb.d/00_schema.sql
+      - ./backend/01_procedures.sql:/docker-entrypoint-initdb.d/01_procedures.sql
+      - ./backend/02_triggers.sql:/docker-entrypoint-initdb.d/02_triggers.sql
+      - ./backend/03_views.sql:/docker-entrypoint-initdb.d/03_views.sql
+      - ./backend/04_roles_y_permisos.sql:/docker-entrypoint-initdb.d/04_roles.sql
+      - ./backend/05_rls.sql:/docker-entrypoint-initdb.d/05_rls.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: clinica_redis
+    ports:
+      - "6380:6379"
+    command: redis-server --loglevel verbose
+
+  api:
+    build: ./api
+    container_name: clinica_api
+    environment:
+      PG_HOST:     postgres
+      PG_PORT:     5432
+      PG_DB:       clinica_vet
+      PG_USER:     administrador
+      PG_PASSWORD: admin123
+      REDIS_URL:   redis://redis:6379
+      PORT:        3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+volumes:
+  postgres_data:
