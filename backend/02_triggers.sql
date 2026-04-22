@@ -1,8 +1,3 @@
--- =============================================================
--- 02_triggers.sql
--- Corte 3 · Base de Datos Avanzadas · UP Chiapas
--- =============================================================
-
 CREATE OR REPLACE FUNCTION fn_historial_cita()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -24,7 +19,7 @@ BEGIN
         ' el ' || TO_CHAR(NEW.fecha_hora, 'DD/MM/YYYY')
     );
 
-    RETURN NULL; -- AFTER: el valor de retorno se ignora
+    RETURN NULL; 
 END;
 $$ LANGUAGE plpgsql;
 

@@ -1,11 +1,5 @@
--- =============================================================
--- 01_procedures.sql
--- Procedures, Function y Vista (reciclados del Corte 2)
--- =============================================================
-
--- =============================================================
 -- STORED PROCEDURE: sp_agendar_cita
--- =============================================================
+
 CREATE OR REPLACE PROCEDURE sp_agendar_cita(
     p_mascota_id     INT,
     p_veterinario_id INT,
@@ -76,9 +70,6 @@ EXCEPTION
 END;
 $$;
 
--- =============================================================
--- FUNCTION: fn_total_facturado
--- =============================================================
 CREATE OR REPLACE FUNCTION fn_total_facturado(
     p_mascota_id INT,
     p_anio       INT

@@ -61,7 +61,7 @@ async function getClientForUser(rol, vetId = null) {
     // Si es veterinario, comunicamos su id a RLS via setting de sesión
     if (creds.vetId) {
         // SET LOCAL aplica solo a la transacción actual
-        await client.query(`SET LOCAL app.vet_id = $1`, [String(creds.vetId)]);
+        await client.query(`SET LOCAL app.vet_id = '${creds.vetId}'`);
     }
 
     return client;

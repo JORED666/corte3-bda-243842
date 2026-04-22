@@ -101,3 +101,10 @@ GRANT rol_veterinario TO vet_garcia;
 GRANT rol_veterinario TO vet_mendez;
 GRANT rol_recepcion   TO recepcionista;
 GRANT rol_admin       TO administrador;
+
+-- Permitir que administrador pueda cambiar a cualquier rol
+GRANT vet_lopez    TO administrador;
+GRANT vet_garcia   TO administrador;
+GRANT vet_mendez   TO administrador;
+GRANT recepcionista TO administrador;
+
